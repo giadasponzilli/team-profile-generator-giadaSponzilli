@@ -1,6 +1,6 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager.js");
+const Engineer = require("./lib/Engineer.js");
+const Intern = require("./lib/Intern.js");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -15,7 +15,8 @@ const render = require("./src/page-template.js");
 // const writeFileAsync = util.promisify(fs.writeFile);
 
 
-const teamMembers = [{}];
+const teamMembers = [];
+
 
 function managerPrompt() {
   inquirer
@@ -41,17 +42,17 @@ function managerPrompt() {
         message: "Manager's office number",
       },
     ])
-    .then((answer) => {
-      const manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber);
+    .then((answers) => {
+      const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
       teamMembers.push(manager);
       promptMenu();
+      console.log(teamMembers)
     });
 }
 
 function engineerPrompt() {
   inquirer
-    .prompt(
-
+    .prompt([
       {
         type: 'input',
         name: 'name',
@@ -72,9 +73,9 @@ function engineerPrompt() {
         name: 'github',
         message: "Engineer's GitHub username",
       },
-    )
-    .then((answer) => {
-      const engineer = new Engineer(answer.name, answer.id, answer.email, answer.github);
+    ])
+    .then((answers) => {
+      const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
       teamMembers.push(engineer)
       promptMenu();
     })
@@ -82,7 +83,7 @@ function engineerPrompt() {
 
 function internPrompt() {
   inquirer
-    .prompt(
+    .prompt([
       {
         type: 'input',
         name: 'name',
@@ -103,9 +104,9 @@ function internPrompt() {
         name: 'school',
         message: "Intern's school",
       },
-    )
-    .then((answer) => {
-      const intern = new Intern(answer.name, answer.id, answer.email, answer.school);
+    ])
+    .then((answers) => {
+      const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
       teamMembers.push(intern);
       promptMenu();
     })
@@ -123,8 +124,7 @@ function promptMenu() {
           'Add an intern',
           'Finish building the team',
         ]
-      },
-    )
+      })
     .then((answers) => {
       switch (answers.menu) {
         case 'Add an engineer':
@@ -142,7 +142,7 @@ function promptMenu() {
 
 
 function generateHTML() {
-  fs.writeFile('../output/team.html', render(teamMembers), (err) => {
+  fs.writeFile(outputPath, render(teamMembers), (err) => {
     if (err) throw err;
     console.log('Successfully wrote to team.html');
   });
