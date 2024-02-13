@@ -1,0 +1,16 @@
+.card {
+  margin: 10px;
+}
+
+.card-header {
+  background-color: rgb(95, 150, 239);
+  color: white;
+}
+
+.headerContainer {
+  background-color: rgba(231, 122, 89)
+}
+
+.fas {
+  margin-right: 10px;
+}
