@@ -5,20 +5,21 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
-
+// Setting up the output directory and file path
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
+// Importing the render function which generates the HTML page
 const render = require("./src/page-template.js");
 
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
 
 // const writeFileAsync = util.promisify(fs.writeFile);
 
 
+// Array to store team members
 const teamMembers = [];
 
-
+// Function to prompt user for manager details
 function managerPrompt() {
   inquirer
     .prompt([
@@ -44,12 +45,15 @@ function managerPrompt() {
       },
     ])
     .then((answers) => {
+      // Creating a new Manager object and pushing it to teamMembers array
       const manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
       teamMembers.push(manager);
+      // Prompting user for next action
       promptMenu();
     });
 }
 
+// Function to prompt user for engineer details
 function engineerPrompt() {
   inquirer
     .prompt([
@@ -75,12 +79,15 @@ function engineerPrompt() {
       },
     ])
     .then((answers) => {
+      // Creating a new Engineer object and pushing it to teamMembers array
       const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
       teamMembers.push(engineer)
+      // Prompting user for next action
       promptMenu();
     })
 }
 
+// Function to prompt user for intern details
 function internPrompt() {
   inquirer
     .prompt([
@@ -106,12 +113,15 @@ function internPrompt() {
       },
     ])
     .then((answers) => {
+      // Creating a new Intern object and pushing it to teamMembers array
       const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
       teamMembers.push(intern);
+      // Prompting user for next action
       promptMenu();
     })
 }
 
+// Function to prompt user for next action
 function promptMenu() {
   inquirer
     .prompt(
@@ -126,6 +136,7 @@ function promptMenu() {
         ]
       })
     .then((answers) => {
+      // Redirecting based on user choice
       switch (answers.menu) {
         case 'Add an engineer':
           engineerPrompt();
@@ -140,7 +151,7 @@ function promptMenu() {
     });
 }
 
-
+// Function to generate HTML file using team members data and render function
 function generateHTML() {
   fs.writeFile(outputPath, render(teamMembers), (err) => {
     if (err) throw err;
@@ -148,4 +159,5 @@ function generateHTML() {
   });
 }
 
+// Starting the application by prompting for manager details
 managerPrompt();
