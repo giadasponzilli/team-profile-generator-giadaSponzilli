@@ -9,6 +9,7 @@ HTML sample file generated using the application: https://github.com/giadasponzi
 ## Installation
 
 This code can be installed clicking on the "Code" green button above and git cloning the SSH to your local terminal.
+Once the project is open in your editor, install all required packages by running: `npm i`. After all packages are installed, you can start the application by running: `node index.js`.
 
 ## Usage
 
